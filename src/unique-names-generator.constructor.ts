@@ -10,6 +10,7 @@ export interface Config {
   separator?: string;
   length?: number;
   style?: Style;
+  randomGenerator?: () => number;
 }
 
 export class UniqueNamesGenerator {
@@ -17,14 +18,16 @@ export class UniqueNamesGenerator {
   private length: number;
   private separator: string;
   private style: Style;
+  private randomGenerator: () => number;
 
   constructor(config: Config) {
-    const { length, separator, dictionaries, style } = config;
+    const { length, separator, dictionaries, style, randomGenerator } = config;
 
     this.dictionaries = dictionaries;
     this.separator = separator;
     this.length = length;
     this.style = style;
+    this.randomGenerator = randomGenerator || Math.random;
   }
 
   public generate(): string {
@@ -47,7 +50,7 @@ export class UniqueNamesGenerator {
     }
 
     return this.dictionaries.slice(0, this.length).reduce((acc: string, curr: string[]) => {
-      const rnd = Math.floor(Math.random() * curr.length);
+      const rnd = Math.floor(this.randomGenerator() * curr.length);
       let word = curr[rnd] || '';
 
       if (this.style === 'lowerCase') {

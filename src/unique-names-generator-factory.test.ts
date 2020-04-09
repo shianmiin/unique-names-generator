@@ -31,7 +31,7 @@ describe('unique-names-generator-factory', () => {
     expect(response1).toBe(response2);
   });
 
-  it('should interfere other generators random seeding', () => {
+  it('should not interfere other generators random seeding', () => {
     const config: Config = {
       dictionaries: [adjectives, colors, animals],
     };
